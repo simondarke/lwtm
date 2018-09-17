@@ -16,16 +16,79 @@
             margin: 0;
             padding: 0;
         }
+        #floating-panel {
+            position: absolute;
+            top: 10px;
+            right: 0%;
+            z-index: 5;
+            background-color: #fff;
+            padding: 5px;
+            border: 1px solid #999;
+            text-align: center;
+            font-family: 'Roboto','sans-serif';
+            line-height: 30px;
+            padding-left: 10px;
+        }
     </style>
 </head>
 <body>
+<div id="floating-panel">
+    <table>
+        <thead><tr><th>Centre Name</th><th>Centre Marker</th><th>Waiting Time</th></tr></thead>
+        <tbody>
+            <tr><td>UCC-1</td><td>A</td><td>67 minutes</td></tr>
+            <tr><td>UCC-2</td><td>B</td><td>78 minutes</td></tr>
+        </tbody>
+
+    </table>
+
+</div>
 <div id="map"></div>
+
+
+
 <script>
+    var map, heatmap;
+
+    const data =
+    {
+        "UCC-1": {
+        "co-ords": {
+            "lat": 52.59972, "lng": -2.09556
+        },
+        "postcode": "AB1 2CD",
+        "waiting-times": {
+            "1min": 34,
+            "10min": 20,
+            "30min": 54,
+            "60min": 32
+    }
+  },
+  "UCC-2": {
+        "co-ords": {
+            "lat": 52.60799,
+            "lng": -2.18822
+        },
+        "postcode": "AB1 2CD",
+        "waiting-times": {
+            "1min": 78,
+            "10min": 20,
+            "30min": 54,
+            "60min": 32
+        }
+    }
+};
+
     function initMap() {
         // Styles a map in night mode.
-        var map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: 40.674, lng: -73.945},
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 52.59972, lng: -2.09556},
             zoom: 12,
+            zoomControl: false,
+            mapTypeControl: false,
+            scaleControl: false,
+            streetViewControl: false,
+            fullscreenControl: false,
             styles: [
                 {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
                 {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
@@ -107,11 +170,45 @@
                 }
             ]
         });
+
+        var trafficLayer = new google.maps.TrafficLayer();
+        trafficLayer.setMap(map);
+
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: makeHeatMap(),
+            radius: 150,
+            dissipating: true
+        });
+        heatmap.setMap(map);
+
+        addCentreMarker("",map,"");
+    }
+
+
+    function makeHeatMap() {
+            let heatdata = [];
+            // console.log(data);
+            for (let key in data) {
+                let obj = data[key];
+
+                heatdata.push({
+                    location: new google.maps.LatLng(obj["co-ords"]["lat"], obj["co-ords"]["lng"]),
+                    weight: obj["waiting-times"]["1min"]
+                });
+            }
+            return heatdata;
+        }
+
+    function addCentreMarker(location, map, centreName){
+        var marker = new google.maps.Marker({
+            position: {lat: 52.59972, lng: -2.09556},
+            map: map
+        });
     }
 </script>
 
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAex0yoI07Akt3yAfUByXKijEZz3EbDHUY&callback=initMap"
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAex0yoI07Akt3yAfUByXKijEZz3EbDHUY&libraries=visualization&callback=initMap"
         async defer></script>
 </body>
 </html>
