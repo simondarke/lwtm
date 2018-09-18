@@ -43,7 +43,7 @@
 <div id="floating-panel" class="ui text container">
     <h1>Centres</h1>
     <table id="datatable" class="ui inverted large celled table">
-        <thead><tr><th>Marker</th><th>Name</th><th>Open</th><th>Waiting Time</th></tr></thead>
+        <thead><tr><th>Marker</th><th>Name</th><th>Open</th><th>Waiting Time (Mins)</th></tr></thead>
         <tbody>
         </tbody>
     </table>
@@ -53,6 +53,8 @@
 
 <script>
     let map, heatmap, region;
+
+    const gradient = ['rgba(255, 0, 0, 0)','rgba(66, 134, 244,1)','rgba(0, 97, 255,1)'];
     function initMap() {
         region = getUrlParameter("region");
         // Styles a map in night mode.
@@ -61,7 +63,8 @@
         grabData().then(ret => {
             heatmap = new google.maps.visualization.HeatmapLayer({
                 data: makeHeatMap(ret),
-                dissipating: false
+                dissipating: false,
+                gradient: gradient
             });
             heatmap.setMap(map);
             addCentreMarkers(ret,map);
@@ -79,7 +82,8 @@
             heatmap.setMap(null);
             heatmap = new google.maps.visualization.HeatmapLayer({
                 data: makeHeatMap(ret),
-                dissipating: false
+                dissipating: false,
+                gradient: gradient
             });
             heatmap.setMap(map);
             //addCentreMarkers(ret,map);

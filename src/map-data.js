@@ -17,7 +17,11 @@ function makeHeatMap(data) {
             let marker = new google.maps.Marker({
                 position: new google.maps.LatLng(obj["co-ords"]["lat"], obj["co-ords"]["lng"]),
                 label: obj["marker-label"],
-                map: map
+                map: map,
+                icon: {
+                    url: "pointer.png",
+                    scaledSize: new google.maps.Size(65, 110)
+                }
             })
         }
     }
