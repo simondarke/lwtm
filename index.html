@@ -32,7 +32,6 @@
             background-color: #000a2d;
             color: #fff;
             border: 1px solid #999;
-
             line-height: 30px;
             padding: 20px 10px 5px 10px;
         }
@@ -49,12 +48,14 @@
         </tbody>
     </table>
     <span>Last updated: <span id="lastupdated"></span></span>
+=
 </div>
 <div id="map"></div>
 
 
 
 <script>
+
     function setUpdated (){
 
         formattedDate = new Date().toTimeString().split(' ')[0];
@@ -64,9 +65,11 @@
 
 <script>
     let map, heatmap, heatmapdata, region;
+
     function initMap() {
         region = getUrlParameter("region");
         // Styles a map in night mode.
+
         map = new google.maps.Map(document.getElementById('map'), mapProps(region));
 
         grabData().then(ret => {
@@ -81,17 +84,14 @@
         addCentreMarkers(ret,map);
         makeTableRows(ret);
         setUpdated();
-        });
 
+        });
         var trafficLayer = new google.maps.TrafficLayer();
         trafficLayer.setMap(map);
-
     }
 
     setInterval(function() {
-
         grabData().then(ret => {
-
             heatmap.setMap(null);
             heatmap = new google.maps.visualization.HeatmapLayer({
                 data: makeHeatMap(ret),
@@ -106,6 +106,7 @@
     }, 1000 * 60);
 
 </script>
+
 
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAex0yoI07Akt3yAfUByXKijEZz3EbDHUY&libraries=visualization&callback=initMap" async defer></script>
