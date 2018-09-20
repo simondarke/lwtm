@@ -15,7 +15,7 @@
     <script src="src/map-data.js"></script>
     <script src="src/table-data.js"></script>
 
-
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAex0yoI07Akt3yAfUByXKijEZz3EbDHUY&libraries=visualization"></script>
     <style>
         /* Always set the map height explicitly to define the size of the div
          * element that contains the map. */
@@ -58,10 +58,10 @@
 <div id="map"></div>
 
 <script>
-    google.maps.event.addDomListener(window, 'load', initMap);
-    setInterval(function(){updateData(); console.log("actually refreshing")}, 1000 * 60);
+    google.maps.event.addDomListener(window, 'load', initMap(region));
+    setInterval(function(){updateData();}, 1000 * 60);
 </script>
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAex0yoI07Akt3yAfUByXKijEZz3EbDHUY&libraries=visualization"></script>
+
 </body>
 </html>

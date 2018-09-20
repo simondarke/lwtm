@@ -9,16 +9,18 @@ async function grabData() {
 
 function updateData(){
    grabData().then(ret => {
+
+        if(heatmap){
+            heatmap.setMap(null);
+        }
+
         heatmap = new google.maps.visualization.HeatmapLayer({
             data: makeHeatMap(ret),
             dissipating: false,
             gradient: gradient,
             radius: 10
         });
-
-        if(heatmap) {
-            heatmap.setMap(null);
-        }
+           // your code here
         heatmap.setMap(map);
         addCentreMarkers(ret,map);
         makeTableRows(ret);
